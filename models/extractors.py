@@ -13,12 +13,12 @@ def build_extractor(c):
         extractor = wide_resnet50_2(pretrained=True, progress=True)
 
     output_channels = []
-    if 'wide' in c.extractor:
+    if c.extractor in ["wide_resnet50_2", "resnext50_32x4d", "resnet50"]:
         for i in range(3):
             output_channels.append(eval('extractor.layer{}[-1].conv3.out_channels'.format(i+1)))
     else:
         for i in range(3):
-            output_channels.append(extractor.eval('layer{}'.format(i+1))[-1].conv2.out_channels)
+            output_channels.append(eval('extractor.layer{}[-1].conv2.out_channels'.format(i+1)))
             
     print("Channels of extracted features:", output_channels)
     return extractor, output_channels
